@@ -1,4 +1,4 @@
-import { Container, CssBaseline, Switch, ThemeProvider, createTheme, } from "@mui/material";
+import { Container, CssBaseline, ThemeProvider, createTheme, } from "@mui/material";
 import Header from "./Header";
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
