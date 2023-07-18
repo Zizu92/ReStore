@@ -90,3 +90,6 @@ C:\Users\IlijaKovaceski\Desktop\ReStore\api\bin\Debug\net7.0\runtimes\unix\lib\n
 C:\Users\IlijaKovaceski\Desktop\ReStore\api\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 C:\Users\IlijaKovaceski\Desktop\ReStore\api\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\IlijaKovaceski\Desktop\ReStore\api\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+C:\Users\IlijaKovaceski\Desktop\ReStore\api\bin\Debug\net7.0\API.staticwebassets.runtime.json
+C:\Users\IlijaKovaceski\Desktop\ReStore\api\bin\Debug\net7.0\Npgsql.dll
+C:\Users\IlijaKovaceski\Desktop\ReStore\api\bin\Debug\net7.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
