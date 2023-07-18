@@ -26,6 +26,12 @@ namespace API.Data.Migrations
                     b.Property<string>("BuyerId")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ClientSecret")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PaymentIntentId")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("Baskets");
@@ -72,6 +78,9 @@ namespace API.Data.Migrations
 
                     b.Property<int>("OrderStatus")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("PaymentIntentId")
+                        .HasColumnType("TEXT");
 
                     b.Property<long>("Subtotal")
                         .HasColumnType("INTEGER");
@@ -426,8 +435,7 @@ namespace API.Data.Migrations
                                 .HasForeignKey("OrderId");
                         });
 
-                    b.Navigation("ShippingAddress")
-                        .IsRequired();
+                    b.Navigation("ShippingAddress");
                 });
 
             modelBuilder.Entity("API.Entities.OrderAggregate.OrderItems", b =>
