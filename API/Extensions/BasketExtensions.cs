@@ -13,7 +13,7 @@ namespace API.Extensions
                 Id = basket.Id,
                 BuyerId = basket.BuyerId,
                 PaymentIntentId = basket.PaymentIntentId,
-                ClientSecret= basket.ClientSecret,
+                ClientSecret = basket.ClientSecret,
                 Items = basket.Items.Select(item => new BasketItemDto
                 {
                     ProductId = item.ProductId,
@@ -27,10 +27,12 @@ namespace API.Extensions
             };
         }
 
-        public static IQueryable<Basket> RetrieveBAsketWithItems(this IQueryable<Basket> query, string BuyerId)
+        public static IQueryable<Basket> RetrieveBasketWithItems(this IQueryable<Basket> query, string buyerId)
         {
-            return query.Include(i => i.Items)
-                .ThenInclude(p => p.Product).Where(b=> b.BuyerId == BuyerId);
+            return query
+                .Include(i => i.Items)
+                .ThenInclude(p => p.Product)
+                .Where(basket => basket.BuyerId == buyerId);
         }
     }
 }

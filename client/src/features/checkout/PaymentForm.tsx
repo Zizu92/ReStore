@@ -1,17 +1,17 @@
 import { Typography, Grid, TextField } from "@mui/material";
+import { CardCvcElement, CardExpiryElement, CardNumberElement } from "@stripe/react-stripe-js";
+import { StripeElementType } from "@stripe/stripe-js";
 import { useFormContext } from "react-hook-form";
 import AppTextInput from "../../app/components/AppTextInput";
-import { CardCvcElement, CardExpiryElement, CardNumberElement } from "@stripe/react-stripe-js";
 import { StripeInput } from "./StripeInput";
-import { StripeElementType } from "@stripe/stripe-js";
 
-interface Props{
-  cardState: {elementError: {[key in StripeElementType]?: string}};
-  onCardInputChange: (event:any) => void;
+interface Props {
+  cardState: {elementError: {[key in StripeElementType]?: string}},
+  onCardInputChange: (event: any) => void;
 }
 
 export default function PaymentForm({cardState, onCardInputChange}: Props) {
-  const{control} = useFormContext();
+  const { control } = useFormContext();
 
   return (
     <>
@@ -20,22 +20,26 @@ export default function PaymentForm({cardState, onCardInputChange}: Props) {
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
-          <AppTextInput name='nameOnCard' label="Name on card" control={control}/>
+          <AppTextInput
+            name='nameOnCard'
+            label='Name on card'
+            control={control}
+          />
         </Grid>
         <Grid item xs={12} md={6}>
           <TextField
-          onChange={onCardInputChange}
-          error={!!cardState.elementError.cardNumber}
-          helperText={cardState.elementError.cardNumber}
+            onChange={onCardInputChange}
+            error={!!cardState.elementError.cardNumber}
+            helperText={cardState.elementError.cardNumber}
             id="cardNumber"
             label="Card number"
             fullWidth
             autoComplete="cc-number"
             variant="outlined"
-            InputLabelProps={{shrink: true}}
+            InputLabelProps={{ shrink: true }}
             InputProps={{
               inputComponent: StripeInput,
-              inputProps:{
+              inputProps: {
                 component: CardNumberElement
               }
             }}
@@ -44,17 +48,17 @@ export default function PaymentForm({cardState, onCardInputChange}: Props) {
         <Grid item xs={12} md={6}>
           <TextField
             onChange={onCardInputChange}
-           error={!!cardState.elementError.cardExpiry}
-           helperText={cardState.elementError.cardExpiry}
+            error={!!cardState.elementError.cardExpiry}
+            helperText={cardState.elementError.cardExpiry}
             id="expDate"
             label="Expiry date"
             fullWidth
             autoComplete="cc-exp"
             variant="outlined"
-            InputLabelProps={{shrink: true}}
+            InputLabelProps={{ shrink: true }}
             InputProps={{
               inputComponent: StripeInput,
-              inputProps:{
+              inputProps: {
                 component: CardExpiryElement
               }
             }}
@@ -70,10 +74,10 @@ export default function PaymentForm({cardState, onCardInputChange}: Props) {
             fullWidth
             autoComplete="cc-csc"
             variant="outlined"
-            InputLabelProps={{shrink: true}}
+            InputLabelProps={{ shrink: true }}
             InputProps={{
               inputComponent: StripeInput,
-              inputProps:{
+              inputProps: {
                 component: CardCvcElement
               }
             }}

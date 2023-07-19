@@ -47,14 +47,14 @@ function App() {
     <ThemeProvider theme={theme}>
       <ToastContainer position="bottom-right" hideProgressBar theme="colored" />
       <CssBaseline />
-      <Header darkMode={darkMode} handleThemeChange={handleThemeChange}  />
-      {loading ?  <LoadingComponent message="Initialising app..." />
-        : location.pathname === '/' ? <HomePage/>
-        : <Container  sx={{ mt: 4 }}>
-            <Outlet />
-          </Container>
-    }
-      
+      <Header darkMode={darkMode} handleThemeChange={handleThemeChange} />
+      {loading ? <LoadingComponent message="Initialising app..." />
+          : location.pathname === '/' ? <HomePage />
+          : <Container sx={{mt: 4}}>
+              <Outlet />
+            </Container>
+      }
+
     </ThemeProvider>
   );
 }

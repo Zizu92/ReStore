@@ -11,7 +11,7 @@ export default function BasketPage() {
 
     return (
         <>
-           <BasketTable items={basket.items}/>
+            <BasketTable items={basket.items} />
             <Grid container>
                 <Grid item xs={6} />
                 <Grid item xs={6}>

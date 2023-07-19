@@ -13,39 +13,44 @@ namespace API.Controllers
     public class OrdersController : BaseApiController
     {
         private readonly StoreContext _context;
+
         public OrdersController(StoreContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<OrderDto>>> GetOrders ()
+        public async Task<ActionResult<List<OrderDto>>> GetOrders()
         {
-            return await _context.Orders
-                .ProdjectOrderToOderDto()
+            var orders = await _context.Orders
+                .ProjectOrderToOrderDto()
                 .Where(x => x.BuyerId == User.Identity.Name)
                 .ToListAsync();
+
+            return orders;
         }
 
         [HttpGet("{id}", Name = "GetOrder")]
-        public async Task<ActionResult<OrderDto>> GetOrder (int id) 
+        public async Task<ActionResult<OrderDto>> GetOrder(int id)
         {
             return await _context.Orders
-                .ProdjectOrderToOderDto()
-                .Where(x => x.BuyerId == User.Identity.Name && x.Id == id)
-                .FirstOrDefaultAsync(); 
+                .ProjectOrderToOrderDto()
+                .FirstOrDefaultAsync(x => x.BuyerId == User.Identity.Name && x.Id == id);
         }
-
+ 
         [HttpPost]
-        public async Task<ActionResult<Order>> CreateOrder(CreateOrderDto orderDto)
+        public async Task<ActionResult<int>> CreateOrder(CreateOrderDto orderDto)
         {
             var basket = await _context.Baskets
-                .RetrieveBAsketWithItems(User.Identity.Name)
+                .RetrieveBasketWithItems(User.Identity.Name)
                 .FirstOrDefaultAsync();
 
-            if (basket == null) return BadRequest(new ProblemDetails{Title = "Could not locate basket"});
+            if (basket == null) return BadRequest(new ProblemDetails 
+            { 
+                Title = "Could not find basket" 
+            });
 
-            var items = new List<OrderItems>();
+            var items = new List<OrderItem>();
 
             foreach (var item in basket.Items)
             {
@@ -56,7 +61,7 @@ namespace API.Controllers
                     Name = productItem.Name,
                     PictureUrl = productItem.PictureUrl
                 };
-                var orderItem = new OrderItems
+                var orderItem = new OrderItem
                 {
                     ItemOrdered = itemOrdered,
                     Price = productItem.Price,
@@ -69,7 +74,7 @@ namespace API.Controllers
             var subtotal = items.Sum(item => item.Price * item.Quantity);
             var deliveryFee = subtotal > 10000 ? 0 : 500;
 
-            var order = new Order 
+            var order = new Order
             {
                 OrderItems = items,
                 BuyerId = User.Identity.Name,
@@ -78,6 +83,7 @@ namespace API.Controllers
                 DeliveryFee = deliveryFee,
                 PaymentIntentId = basket.PaymentIntentId
             };
+
             _context.Orders.Add(order);
             _context.Baskets.Remove(basket);
 
@@ -86,6 +92,7 @@ namespace API.Controllers
                 var user = await _context.Users
                     .Include(a => a.Address)
                     .FirstOrDefaultAsync(x => x.UserName == User.Identity.Name);
+
                 var address = new UserAddress
                 {
                     FullName = orderDto.ShippingAddress.FullName,
@@ -94,13 +101,14 @@ namespace API.Controllers
                     City = orderDto.ShippingAddress.City,
                     State = orderDto.ShippingAddress.State,
                     Zip = orderDto.ShippingAddress.Zip,
-                    Country = orderDto.ShippingAddress.Country,
+                    Country = orderDto.ShippingAddress.Country
                 };
-                user.Address= address;
+                user.Address = address;
             }
+
             var result = await _context.SaveChangesAsync() > 0;
 
-            if (result) return CreatedAtRoute("GetOrder", new{id = order.Id}, order.Id);
+            if (result) return CreatedAtRoute("GetOrder", new { id = order.Id }, order.Id);
 
             return BadRequest("Problem creating order");
         }

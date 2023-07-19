@@ -11,7 +11,7 @@ namespace API.DTOs
         public List<OrderItemDto> OrderItems { get; set; }
         public long Subtotal { get; set; }
         public long DeliveryFee { get; set; }
-        public string OrderStatus { get; set; }  
+        public string OrderStatus { get; set; }
         public long Total { get; set; }
     }
 }

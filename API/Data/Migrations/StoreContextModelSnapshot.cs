@@ -17,7 +17,7 @@ namespace API.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -101,7 +101,7 @@ namespace API.Data.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("API.Entities.OrderAggregate.OrderItems", b =>
+            modelBuilder.Entity("API.Entities.OrderAggregate.OrderItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -122,7 +122,7 @@ namespace API.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItem");
                 });
 
             modelBuilder.Entity("API.Entities.Product", b =>
@@ -147,6 +147,9 @@ namespace API.Data.Migrations
 
                     b.Property<long>("Price")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("PublicId")
+                        .HasColumnType("text");
 
                     b.Property<int>("QuantityInStock")
                         .HasColumnType("integer");
@@ -458,10 +461,11 @@ namespace API.Data.Migrations
                                 .HasForeignKey("OrderId");
                         });
 
-                    b.Navigation("ShippingAddress");
+                    b.Navigation("ShippingAddress")
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("API.Entities.OrderAggregate.OrderItems", b =>
+            modelBuilder.Entity("API.Entities.OrderAggregate.OrderItem", b =>
                 {
                     b.HasOne("API.Entities.OrderAggregate.Order", null)
                         .WithMany("OrderItems")
@@ -469,7 +473,7 @@ namespace API.Data.Migrations
 
                     b.OwnsOne("API.Entities.OrderAggregate.ProductItemOrdered", "ItemOrdered", b1 =>
                         {
-                            b1.Property<int>("OrderItemsId")
+                            b1.Property<int>("OrderItemId")
                                 .HasColumnType("integer");
 
                             b1.Property<string>("Name")
@@ -481,12 +485,12 @@ namespace API.Data.Migrations
                             b1.Property<int>("ProductId")
                                 .HasColumnType("integer");
 
-                            b1.HasKey("OrderItemsId");
+                            b1.HasKey("OrderItemId");
 
-                            b1.ToTable("OrderItems");
+                            b1.ToTable("OrderItem");
 
                             b1.WithOwner()
-                                .HasForeignKey("OrderItemsId");
+                                .HasForeignKey("OrderItemId");
                         });
 
                     b.Navigation("ItemOrdered");
